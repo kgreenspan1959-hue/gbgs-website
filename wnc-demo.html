@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>WNC Climate Control — Field Operations Platform</title>
+<style>
+:root{
+  --surface:#fcfcfb; --panel:#ffffff; --ink:#0b0b0b; --ink2:#52514e; --ink3:#8a887f;
+  --line:#e7e6e1; --brand:#16324f; --brand2:#1d4568; --accent:#2a78d6; --accent2:#eb6834;
+  --good:#008300; --warn:#c98500; --gold:#c9a227;
+  --r:10px; --shadow:0 1px 3px rgba(0,0,0,.07),0 4px 14px rgba(0,0,0,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font:15px/1.5 -apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--surface);color:var(--ink)}
+header{background:var(--brand);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;font-weight:700;letter-spacing:.02em}
+header .sub{font-size:12px;opacity:.75}
+nav{display:flex;gap:4px;background:var(--brand2);padding:6px 16px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+nav button{background:transparent;border:0;color:#cfe0f0;padding:9px 16px;font-size:14px;font-weight:600;border-radius:8px;cursor:pointer}
+nav button.on{background:#fff;color:var(--brand)}
+main{max-width:1180px;margin:0 auto;padding:26px 20px 80px}
+.grid{display:grid;gap:16px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow)}
+.tile .k{font-size:12px;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.tile .v{font-size:26px;font-weight:750;margin-top:2px}
+.tile .d{font-size:12px;color:var(--ink3)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.card h2{font-size:16px;margin-bottom:12px}
+.card h3{font-size:14px;margin:14px 0 8px;color:var(--ink2)}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.row>*{flex:1;min-width:180px}
+label{font-size:12px;font-weight:600;color:var(--ink2);display:block;margin-bottom:3px}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+button.btn{background:var(--brand);color:#fff;border:0;border-radius:8px;padding:10px 18px;font:600 14px/1 inherit;cursor:pointer}
+button.btn.sec{background:#eef1f4;color:var(--brand)}
+button.btn.sm{padding:6px 12px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);text-align:left;padding:8px;border-bottom:2px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.chip{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:650}
+.chip.res{background:#e3edfa;color:#1c5cab}.chip.com{background:#fde9df;color:#b34515}
+.chip.ok{background:#e3f2e3;color:var(--good)}.chip.pend{background:#fdf3dd;color:#8a6100}
+.mathbox{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;padding:14px;font-variant-numeric:tabular-nums}
+.mathbox .mr{display:flex;justify-content:space-between;padding:3px 0;font-size:14px}
+.mathbox .mr.tot{border-top:2px solid var(--ink);margin-top:6px;padding-top:8px;font-weight:750;font-size:16px}
+.mathbox .mr .lbl{color:var(--ink2)}
+.slider-row{display:flex;align-items:center;gap:12px}
+input[type=range]{accent-color:var(--brand);padding:0}
+.opt3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:10px}
+.opt{border:2px solid var(--line);border-radius:var(--r);padding:14px}
+.opt.rec{border-color:var(--gold)}
+.opt .tier{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.opt .price{font-size:22px;font-weight:750;margin:4px 0}
+.opt .vv{font-size:13px;color:var(--ink2);margin-top:6px}
+.note{font-size:12px;color:var(--ink3);margin-top:8px}
+.footer{max-width:1180px;margin:30px auto 0;padding:0 20px;font-size:12px;color:var(--ink3);text-align:center}
+.footer b{color:var(--gold)}
+.viz{position:relative}
+.viz svg{width:100%;height:auto;display:block}
+.tt{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:8px;padding:8px 10px;font-size:12px;display:none;z-index:5;white-space:nowrap}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--ink2);margin-bottom:6px}
+.legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.pillL{border-left:4px solid var(--accent);padding-left:10px}
+.hide{display:none!important}
+.checklist{columns:2;gap:24px;font-size:13.5px}
+.checklist li{margin:0 0 6px 18px;break-inside:avoid}
+@media(max-width:700px){.checklist{columns:1}}
+.demo-banner{background:#fdf3dd;border:1px solid #e8d59a;color:#6b4d00;border-radius:8px;padding:8px 14px;font-size:13px;margin-bottom:18px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>WNC CLIMATE CONTROL</h1>
+    <div class="sub">Field Operations Platform · Weaverville, NC · NC License #34348</div>
+  </div>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+<div class="footer">Built for WNC Climate Control · Powered by <b>Greenspan Business Growth Systems</b> · Strategy First | Technology Second | Growth Always</div>
+<div class="tt" id="tt"></div>
+
+<script>
+/* ============ CONFIG — Josh's confirmed numbers (Blueprint v3) ============ */
+const CFG = {
+  taxRate: 0.07,                 // NC sales tax
+  matSurcharge: 1.18,            // inflation surcharge, materials ONLY
+  laborRate: 46,                 // $/hr (confirmed iteration 1)
+  laborOverhead: 1.60,           // dual overhead multiplier
+  gmDefaults: { construction: 0.15, aor: 0.35 },   // divisor margins
+  gmRange:    { construction: [0.10, 0.15], aor: [0.30, 0.40] },
+  service: {                     // flat-rate retail — owner-editable, never formula-derived
+    diagRes: 120, diagCom: 170,  // first hour incl. drive time, before tax
+    hrRes: 180, hrCom: 210,      // after first hour, before tax
+    partsMargin: 0.50,           // MARGIN: price = cost / (1 - 0.5)
+    memberDisc: 0.15
+  },
+  maint: {                       // 2026 rate card (supersedes paper contract)
+    res1: 285, resAddl: 100, com1: 375, comAddl: 120
+  }
+};
+const fmt = n => '$' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmt0 = n => '$' + Math.round(n).toLocaleString('en-US');
+
+/* ============ EQUIPMENT (real entries from the Yandle-Witherspoon price book, 07/10/2026) ============ */
+const EQUIPMENT = [{"series": "5A6V0X", "name": "20 SEER2 Variable Speed Heat Pump", "ton": "2", "model": "5A6V0X24A1000", "cost": 5106.99}, {"series": "5A6V0X", "name": "20 SEER2 Variable Speed Heat Pump", "ton": "2", "model": "5TAMXB02AV21D", "cost": 2298.61}, {"series": "5A6V0X", "name": "20 SEER2 Variable Speed Heat Pump", "ton": "2", "model": "5TAMXC03AV31D", "cost": 2391.67}, {"series": "5A6V0X", "name": "20 SEER2 Variable Speed Heat Pump", "ton": "2", "model": "5TAMXD04AV31D", "cost": 2555.58}, {"series": "5A6V0X-A", "name": "AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B", "ton": "2", "model": "5A6V0X24A1000A", "cost": 5106.99}, {"series": "5A6V0X-A", "name": "AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B", "ton": "3", "model": "5A6V0X36A1000A", "cost": 5676.87}, {"series": "5A6V0X-A", "name": "AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B", "ton": "4", "model": "5A6V0X48A1000A", "cost": 6156.34}, {"series": "5A6V0X-A", "name": "AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B", "ton": "5", "model": "5A6V0X60A1000A", "cost": 6635.8}, {"series": "5A6V0X-B", "name": "AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B", "ton": "5", "model": "5A6V0X60A1000B", "cost": 6635.8}, {"series": "5A6V8X", "name": "18 SEER2 Variable Speed Heat Pump", "ton": "2", "model": "5A6V8X24A1000", "cost": 4397.34}, {"series": "5A6V8X", "name": "18 SEER2 Variable Speed Heat Pump", "ton": "3", "model": "5A6V8X36A1000", "cost": 4983.28}, {"series": "5A6V8X", "name": "18 SEER2 Variable Speed Heat Pump", "ton": "4", "model": "5A6V8X48A1000", "cost": 5476.25}, {"series": "5A6V8X", "name": "18 SEER2 Variable Speed Heat Pump", "ton": "5", "model": "5A6V8X60A1000", "cost": 5966.41}, {"series": "5A6H7", "name": "17 SEER2 Multi-Speed Heat Pump", "ton": "2", "model": "5TAM5C03AC21S", "cost": 2129.19}, {"series": "5A6H7", "name": "17 SEER2 Multi-Speed Heat Pump", "ton": "2", "model": "5TEM6B02AV21S", "cost": 1500.0}, {"series": "5A6H7", "name": "17 SEER2 Multi-Speed Heat Pump", "ton": "2", "model": "5TEM6B03AV21S", "cost": 1591.0}, {"series": "5A6H7", "name": "17 SEER2 Multi-Speed Heat Pump", "ton": "3", "model": "5TAM5C04AC31S", "cost": 2201.41}, {"series": "5HCL5", "name": "Silver 16 Low Profile Cold Climate Heat Pump", "ton": "3", "model": "5HCL5036B1000", "cost": 2878.0}, {"series": "5HCL5", "name": "Silver 16 Low Profile Cold Climate Heat Pump", "ton": "3", "model": "5TDM5B03AC21", "cost": 1786.67}, {"series": "5HCL5", "name": "Silver 16 Low Profile Cold Climate Heat Pump", "ton": "3", "model": "5TDM5C04AC31", "cost": 2096.0}, {"series": "5HCL5", "name": "Silver 16 Low Profile Cold Climate Heat Pump", "ton": "5", "model": "5HCL5060B1000", "cost": 3609.0}, {"series": "5HPL5", "name": "16 Multi-Speed Low Profile Heat Pump", "ton": "2", "model": "5HPL5024A1000", "cost": 2500.0}, {"series": "5HPL5", "name": "16 Multi-Speed Low Profile Heat Pump", "ton": "3", "model": "5HPL5036A1000", "cost": 2713.0}, {"series": "5HPL5", "name": "16 Multi-Speed Low Profile Heat Pump", "ton": "4", "model": "5HPL5048A1000", "cost": 2995.0}, {"series": "5HPL5", "name": "16 Multi-Speed Low Profile Heat Pump", "ton": "5", "model": "5HPL5060A1000", "cost": 3273.0}, {"series": "5A6H6", "name": "16 SEER2 Single-Stage Heat Pump", "ton": "1.5", "model": "5A6H6018A1000", "cost": 2650.0}, {"series": "5A6H6", "name": "16 SEER2 Single-Stage Heat Pump", "ton": "1.5", "model": "5TAM5B01AC21S", "cost": 1983.34}, {"series": "5A6H6", "name": "16 SEER2 Single-Stage Heat Pump", "ton": "1.5", "model": "5TEM4B02AC21S", "cost": 1214.0}, {"series": "5A6H6", "name": "16 SEER2 Single-Stage Heat Pump", "ton": "2", "model": "5A6H6024A1000", "cost": 2935.0}, {"series": "5A6H5", "name": "Silver 15 Single-Stage Heat Pump", "ton": "3.5", "model": "5A6H5042A1000", "cost": 3290.0}, {"series": "5A6H5", "name": "Silver 15 Single-Stage Heat Pump", "ton": "5", "model": "5A6H5060A1000", "cost": 3639.0}, {"series": "5A6H5", "name": "Silver 15 Single-Stage Heat Pump", "ton": "2.5", "model": "5A6H5030A1000", "cost": 3071.0}, {"series": "5A6H4", "name": "Silver 14 Single Stage Heat Pump", "ton": "1.5", "model": "5A6H4018A1000", "cost": 2146.0}, {"series": "5A6H4", "name": "Silver 14 Single Stage Heat Pump", "ton": "1.5", "model": "5TMM5B0B30M21S", "cost": 1140.8}, {"series": "5A6H4", "name": "Silver 14 Single Stage Heat Pump", "ton": "1.5", "model": "5TMM5B0C36M31S", "cost": 1409.23}, {"series": "5A6H4", "name": "Silver 14 Single Stage Heat Pump", "ton": "2", "model": "5A6H4024A1000", "cost": 2246.0}, {"series": "5A7V0X", "name": "20 SEER2 Variable Speed AC", "ton": "2", "model": "5A7V0X24A1000", "cost": 5018.1}, {"series": "5A7V0X", "name": "20 SEER2 Variable Speed AC", "ton": "2", "model": "5TXCB003AS3HC", "cost": 703.0}, {"series": "5A7V0X", "name": "20 SEER2 Variable Speed AC", "ton": "2", "model": "5TXCA002AS3HC", "cost": 696.0}, {"series": "5A7V0X", "name": "20 SEER2 Variable Speed AC", "ton": "2", "model": "5A7V0X25A1000", "cost": 5133.38}, {"series": "5A7V8X", "name": "18 SEER2 Variable Speed Air Conditioner", "ton": "2", "model": "5A7V8X24A1000", "cost": 6012.0}, {"series": "5A7V8X", "name": "18 SEER2 Variable Speed Air Conditioner", "ton": "3", "model": "5A7V8X36A1000", "cost": 6653.97}, {"series": "5A7V8X", "name": "18 SEER2 Variable Speed Air Conditioner", "ton": "4", "model": "5A7V8X48A1000", "cost": 7192.61}, {"series": "5A7V8X", "name": "18 SEER2 Variable Speed Air Conditioner", "ton": "5", "model": "5A7V8X60A1000", "cost": 5362.55}, {"series": "5A7A7", "name": "17 SEER2 Multi-Speed Air Conditioner", "ton": "2", "model": "5A7A7024A1000", "cost": 2939.0}, {"series": "5A7A7", "name": "17 SEER2 Multi-Speed Air Conditioner", "ton": "3", "model": "5A7A7036A1000", "cost": 2795.86}, {"series": "5A7A7", "name": "17 SEER2 Multi-Speed Air Conditioner", "ton": "4", "model": "5A7A7048A1000", "cost": 3051.42}, {"series": "5A7A7", "name": "17 SEER2 Multi-Speed Air Conditioner", "ton": "5", "model": "5A7A7060A1000", "cost": 3137.53}, {"series": "5A7A6", "name": "16 SEER2 Single-Stage Air Conditioner", "ton": "1.5", "model": "5A7A6018A1000", "cost": 2083.0}, {"series": "5A7A6", "name": "16 SEER2 Single-Stage Air Conditioner", "ton": "1.5", "model": "5TXCA001AS3HC", "cost": 688.0}, {"series": "5A7A6", "name": "16 SEER2 Single-Stage Air Conditioner", "ton": "2", "model": "5A7A6024A1000", "cost": 2372.0}, {"series": "5A7A6", "name": "16 SEER2 Single-Stage Air Conditioner", "ton": "2.5", "model": "5A7A6030A1000", "cost": 2500.0}, {"series": "5A7A5", "name": "15 SEER2 Single Stage Air Conditioner", "ton": "1.5", "model": "5A7A5018A1000", "cost": 2083.0}, {"series": "5A7A5", "name": "15 SEER2 Single Stage Air Conditioner", "ton": "2", "model": "5A7A5024A1000", "cost": 2372.0}, {"series": "5A7A5", "name": "15 SEER2 Single Stage Air Conditioner", "ton": "4", "model": "5A7A5048A1000", "cost": 2839.0}, {"series": "5A7A5", "name": "15 SEER2 Single Stage Air Conditioner", "ton": "5", "model": "5A7A5060A1000", "cost": 3082.0}, {"series": "5A7A4", "name": "14 SEER2 Single Stage Air Conditioner", "ton": "1.5", "model": "5A7A4018A1000", "cost": 1867.0}, {"series": "5A7A4", "name": "14 SEER2 Single Stage Air Conditioner", "ton": "2", "model": "5A7A4024A1000", "cost": 1974.0}, {"series": "5A7A4", "name": "14 SEER2 Single Stage Air Conditioner", "ton": "2.5", "model": "5A7A4030A1000", "cost": 2084.0}, {"series": "5A7A4", "name": "14 SEER2 Single Stage Air Conditioner", "ton": "3", "model": "5A7A4036A1000", "cost": 2153.0}, {"series": "5A6V0X", "name": "B AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B Refrigerant", "ton": null, "model": "5A6H7048A1000", "cost": 4080.0}, {"series": "5A6V0X", "name": "B AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B Refrigerant", "ton": null, "model": "5TMM5B0A30M21S", "cost": 1009.22}, {"series": "5A6V0X", "name": "B AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B Refrigerant", "ton": null, "model": "5PXFH004AC3", "cost": 812.4}, {"series": "5A6V0X", "name": "B AccuComfort Platinum 20 SEER2 Variable Speed Heat Pump w/ R-454B Refrigerant", "ton": null, "model": "5WCZ5024A1000", "cost": 5154.24}];
+
+/* value-added verbiage by product family */
+const VERBIAGE = {
+  '20 SEER2': 'Top-of-the-line comfort: variable speed means it runs quiet, holds an exact temperature, and sips power on the hottest days — the system you stop thinking about.',
+  '18 SEER2': 'Premium efficiency with variable-speed comfort — noticeably lower power bills and steady, even temperatures room to room.',
+  '17 SEER2': 'Multi-speed comfort that adapts to the day — strong efficiency without the flagship price.',
+  '16 SEER2': 'The workhorse: dependable single-stage comfort, solid efficiency, straightforward to service for years to come.',
+  '16 Multi':  'Low-profile flexibility with multi-speed comfort — a smart fit where space is tight.',
+  '15 SEER2': 'Honest value — reliable comfort that meets today\'s efficiency standards without stretching the budget.',
+  '15 Single': 'Honest value — reliable comfort that meets today\'s efficiency standards without stretching the budget.',
+  '14 SEER2': 'The budget-smart choice: proven, simple, and easy to maintain.',
+  'default': 'Quality American Standard equipment, installed by licensed pros and backed by our one-year labor warranty.'
+};
+function verbiageFor(name){ for (const k in VERBIAGE) if (name.includes(k)) return VERBIAGE[k]; return VERBIAGE.default; }
+
+/* ============ SEED DATA (demo) ============ */
+let leads = [
+  {id:1, name:'Margaret Hollifield', phone:'(828) 555-0142', cat:'AOR / Change-out', pillar:'AOR', to:'Josh / Ralph', when:'Today 9:12 AM', note:'15-yr-old heat pump died, wants replacement quote'},
+  {id:2, name:'Blue Ridge Diner', phone:'(828) 555-0177', cat:'Service / Maintenance', pillar:'Service', to:'Zach', when:'Today 8:05 AM', note:'Walk-in cooler area AC not cooling'},
+  {id:3, name:'Foothills Builders', phone:'(828) 555-0163', cat:'Construction', pillar:'Construction', to:'Josh / Ralph', when:'Yesterday', note:'New 2,400 sq ft residential — has architectural set'},
+];
+let agreements = [
+  {id:1, cust:'Danny Ledbetter', type:'res', systems:1, signed:'2026-06-30', v1:'2026-08-04', v2:'2027-02-04', status:'active'},
+  {id:2, cust:'Mountain View Church', type:'com', systems:3, signed:'2026-07-08', v1:'2026-08-12', v2:'2026-11-12', status:'active'},
+];
+let quotes = [
+  {id:'Q-1041', cust:'Margaret Hollifield', pillar:'AOR', total:9002.54, status:'pending', when:'Today'},
+  {id:'Q-1040', cust:'Foothills Builders', pillar:'Construction', total:21460.00, status:'pending', when:'Yesterday'},
+  {id:'Q-1039', cust:'T. Buchanan', pillar:'AOR', total:7218.11, status:'approved', when:'Jul 20'},
+];
+const trend = { months:['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul'],
+  res:[92,84,71,66,74,88,81,77,90,104,128,141], com:[31,29,34,38,41,46,39,35,33,38,44,47] }; // $K — demo data
+
+/* ============ NAV ============ */
+const VIEWS = ['Dashboard','New Quote','Service Ticket','Maintenance','Leads'];
+let view = 'Dashboard';
+function nav(){ document.getElementById('nav').innerHTML = VIEWS.map(v=>
+  `<button class="${v===view?'on':''}" onclick="go('${v}')">${v}</button>`).join(''); }
+function go(v){ view=v; nav(); render(); window.scrollTo(0,0); }
+
+/* ============ QUOTE ENGINE (the exact formula chain) ============ */
+let qState = { pillar:'aor', equip:[], matCost:0, laborHrs:0, rentCost:0, gm:CFG.gmDefaults.aor, cust:'' };
+function quoteMath(equipCost, matCost, laborHrs, rentCost, gm){
+  const eqTax = equipCost * (1+CFG.taxRate);
+  const matTax = matCost * (1+CFG.taxRate);
+  const matSur = matTax * CFG.matSurcharge;
+  const rentTax = rentCost * (1+CFG.taxRate);
+  const materialsTotal = matSur + eqTax + rentTax;         // (Q6*1.18)+Q5+Q7
+  const labor = laborHrs * CFG.laborRate;
+  const laborOH = labor * CFG.laborOverhead;               // Q9*1.6
+  const totalCost = materialsTotal + laborOH;              // Q11+Q8
+  const bid = totalCost / (1 - gm);                        // P12/(1-GM)
+  return {eqTax, matTax, matSur, rentTax, materialsTotal, labor, laborOH, totalCost, bid, profit: bid-totalCost};
+}
+
+/* ============ RENDERERS ============ */
+function render(){
+  const m = document.getElementById('main');
+  if(view==='Dashboard') m.innerHTML = rDash();
+  if(view==='New Quote'){ m.innerHTML = rQuote(); qBind(); }
+  if(view==='Service Ticket'){ m.innerHTML = rService(); sCalc(); }
+  if(view==='Maintenance'){ m.innerHTML = rMaint(); mCalc(); }
+  if(view==='Leads'){ m.innerHTML = rLeads(); }
+  if(view==='Dashboard') drawTrend();
+}
+
+function rDash(){
+  const pend = quotes.filter(q=>q.status==='pending');
+  const pendSum = pend.reduce((s,q)=>s+q.total,0);
+  const arr = agreements.reduce((s,a)=>{
+    const c = a.type==='res' ? CFG.maint.res1 + (a.systems-1)*CFG.maint.resAddl : CFG.maint.com1 + (a.systems-1)*CFG.maint.comAddl;
+    return s + c;
+  },0);
+  return `
+  <div class="demo-banner">DEMO DATA — v1 preview build. Everything on this screen is live math on sample records; production data hookup follows your feedback.</div>
+  <div class="grid tiles" style="margin-bottom:18px">
+    <div class="tile"><div class="k">Quotes awaiting response</div><div class="v">${fmt0(pendSum)}</div><div class="d">${pend.length} open quotes — follow up</div></div>
+    <div class="tile"><div class="k">Maintenance agreements</div><div class="v">${agreements.length}</div><div class="d">${fmt0(arr)}/yr recurring, before tax</div></div>
+    <div class="tile"><div class="k">New leads this week</div><div class="v">${leads.length}</div><div class="d">routed automatically by pillar</div></div>
+    <div class="tile"><div class="k">Visits to confirm</div><div class="v">${agreements.length*2}</div><div class="d">auto-scheduled, awaiting customer OK</div></div>
+  </div>
+  <div class="card" style="margin-bottom:18px">
+    <h2>Revenue trend — Residential vs Commercial <span style="font-weight:400;color:var(--ink3);font-size:12px">(monthly, $K — demo data)</span></h2>
+    <div class="legend"><span><span class="sw" style="background:#2a78d6"></span>Residential</span><span><span class="sw" style="background:#eb6834"></span>Commercial</span></div>
+    <div class="viz" id="trendviz"></div>
+    <div class="note">The seasonal read at a glance: residential climbs into summer while commercial holds steady — the shoulder-season planning view from our meeting.</div>
+  </div>
+  <div class="card">
+    <h2>Quotes needing attention</h2>
+    <table><tr><th>Quote</th><th>Customer</th><th>Pillar</th><th class="num">Amount</th><th>Status</th><th>Sent</th></tr>
+    ${quotes.map(q=>`<tr><td>${q.id}</td><td>${q.cust}</td><td>${q.pillar}</td><td class="num">${fmt(q.total)}</td>
+      <td><span class="chip ${q.status==='approved'?'ok':'pend'}">${q.status}</span></td><td>${q.when}</td></tr>`).join('')}
+    </table>
+  </div>`;
+}
+
+/* --- trend chart (SVG, crosshair tooltip, direct labels) --- */
+function drawTrend(){
+  const el = document.getElementById('trendviz'); if(!el) return;
+  const W=980,H=300,L=46,R=90,T=14,B=30;
+  const max=160;
+  const x=i=>L+(W-L-R)*(i/(trend.months.length-1));
+  const y=v=>T+(H-T-B)*(1-v/max);
+  const path=a=>a.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  let grid='';
+  for(const g of [0,40,80,120,160]) grid+=`<line x1="${L}" x2="${W-R}" y1="${y(g)}" y2="${y(g)}" stroke="#eceae4"/><text x="${L-8}" y="${y(g)+4}" text-anchor="end" font-size="11" fill="#8a887f">${g}</text>`;
+  let ticks='';
+  trend.months.forEach((mo,i)=>{ ticks+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle" font-size="11" fill="#8a887f">${mo}</text>`; });
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" id="trendsvg">
+    ${grid}${ticks}
+    <path d="${path(trend.res)}" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="${path(trend.com)}" fill="none" stroke="#eb6834" stroke-width="2.5" stroke-linejoin="round"/>
+    <text x="${W-R+8}" y="${y(trend.res[11])+4}" font-size="12" font-weight="600" fill="#0b0b0b">Residential</text>
+    <text x="${W-R+8}" y="${y(trend.com[11])+4}" font-size="12" font-weight="600" fill="#0b0b0b">Commercial</text>
+    <line id="xh" y1="${T}" y2="${H-B}" stroke="#b9b7ae" stroke-dasharray="3,3" style="display:none"/>
+    <circle id="d1" r="4.5" fill="#2a78d6" stroke="#fff" stroke-width="2" style="display:none"/>
+    <circle id="d2" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="2" style="display:none"/>
+    <rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="transparent" id="hit"/>
+  </svg>`;
+  const svg=document.getElementById('trendsvg'), tt=document.getElementById('tt');
+  const hit=document.getElementById('hit');
+  hit.addEventListener('mousemove',ev=>{
+    const pt=svg.createSVGPoint(); pt.x=ev.clientX; pt.y=ev.clientY;
+    const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+    const i=Math.max(0,Math.min(11,Math.round((p.x-L)/((W-L-R)/11))));
+    document.getElementById('xh').setAttribute('x1',x(i)); document.getElementById('xh').setAttribute('x2',x(i));
+    document.getElementById('xh').style.display='block';
+    const d1=document.getElementById('d1'), d2=document.getElementById('d2');
+    d1.setAttribute('cx',x(i)); d1.setAttribute('cy',y(trend.res[i])); d1.style.display='block';
+    d2.setAttribute('cx',x(i)); d2.setAttribute('cy',y(trend.com[i])); d2.style.display='block';
+    tt.style.display='block'; tt.style.left=(ev.pageX+14)+'px'; tt.style.top=(ev.pageY-10)+'px';
+    tt.innerHTML=`<b>${trend.months[i]}</b><br><span style="color:#2a78d6">●</span> Residential: $${trend.res[i]}K<br><span style="color:#eb6834">●</span> Commercial: $${trend.com[i]}K`;
+  });
+  hit.addEventListener('mouseleave',()=>{ tt.style.display='none';
+    ['xh','d1','d2'].forEach(id=>document.getElementById(id).style.display='none'); });
+}
+
+/* --- New Quote --- */
+function rQuote(){
+  const tons=[...new Set(EQUIPMENT.map(e=>e.ton))].sort();
+  return `
+  <div class="card">
+    <h2 class="pillL">New Quote — AOR / Construction</h2>
+    <div class="row">
+      <div><label>Customer</label><input id="q_cust" placeholder="Name / job" value="${qState.cust}"></div>
+      <div><label>Pillar</label><select id="q_pillar">
+        <option value="aor" ${qState.pillar==='aor'?'selected':''}>AOR / Change-out (margin 30–40%)</option>
+        <option value="construction" ${qState.pillar==='construction'?'selected':''}>Construction / Project (margin 10–15%)</option>
+      </select></div>
+    </div>
+    <h3>Equipment — from your price book (Yandle-Witherspoon, current 07/10/2026)</h3>
+    <div class="row">
+      <div><label>Tonnage</label><select id="q_ton"><option value="">Any</option>${tons.map(t=>`<option>${t}</option>`).join('')}</select></div>
+      <div style="flex:2"><label>Unit</label><select id="q_unit"></select></div>
+      <div style="flex:0 0 auto;align-self:end"><button class="btn sm" onclick="qAddEquip()">+ Add unit</button></div>
+    </div>
+    <div id="q_equiplist"></div>
+    <h3>Job inputs</h3>
+    <div class="row">
+      <div><label>Materials cost ($, pre-tax)</label><input id="q_mat" type="number" min="0" value="${qState.matCost||''}" placeholder="800"></div>
+      <div><label>Labor hours</label><input id="q_hrs" type="number" min="0" value="${qState.laborHrs||''}" placeholder="16"></div>
+      <div><label>Cranes / lifts / rentals ($)</label><input id="q_rent" type="number" min="0" value="${qState.rentCost||''}" placeholder="0"></div>
+    </div>
+    <h3>Margin</h3>
+    <div class="slider-row">
+      <input type="range" id="q_gm" min="5" max="50" step="1" style="flex:1">
+      <div style="min-width:120px;font-weight:700" id="q_gmlab"></div>
+    </div>
+    <div class="note" id="q_gmnote"></div>
+    <div class="row" style="margin-top:16px;align-items:flex-start">
+      <div class="mathbox" id="q_math" style="flex:1.2"></div>
+      <div style="flex:1"><div id="q_options"></div></div>
+    </div>
+  </div>`;
+}
+function qBind(){
+  const $=id=>document.getElementById(id);
+  $('q_pillar').onchange=()=>{ qState.pillar=$('q_pillar').value; qState.gm=CFG.gmDefaults[qState.pillar]; qRefresh(); };
+  $('q_ton').onchange=qFillUnits; ['q_mat','q_hrs','q_rent'].forEach(id=>$(id).oninput=qRefresh);
+  $('q_cust').oninput=()=>qState.cust=$('q_cust').value;
+  $('q_gm').oninput=()=>{ qState.gm=$('q_gm').value/100; qRefresh(false); };
+  qFillUnits(); qRefresh();
+}
+function qFillUnits(){
+  const ton=document.getElementById('q_ton').value;
+  const list=EQUIPMENT.filter(e=>!ton||e.ton===ton);
+  document.getElementById('q_unit').innerHTML=list.map((e,i)=>
+    `<option value="${e.model}">${e.ton?e.ton+' Ton — ':''}${e.name} — ${e.model} — ${fmt(e.cost)}</option>`).join('');
+}
+function qAddEquip(){
+  const model=document.getElementById('q_unit').value;
+  const e=EQUIPMENT.find(x=>x.model===model);
+  if(e) qState.equip.push(e); qRefresh();
+}
+function qDelEquip(i){ qState.equip.splice(i,1); qRefresh(); }
+function qRefresh(resetSlider=true){
+  const $=id=>document.getElementById(id);
+  qState.matCost=+$('q_mat').value||0; qState.laborHrs=+$('q_hrs').value||0; qState.rentCost=+$('q_rent').value||0;
+  const [lo,hi]=CFG.gmRange[qState.pillar];
+  if(resetSlider){ $('q_gm').value=Math.round(qState.gm*100); }
+  $('q_gmlab').textContent='GM '+Math.round(qState.gm*100)+'%';
+  const inBand = qState.gm>=lo-1e-9 && qState.gm<=hi+1e-9;
+  $('q_gmnote').innerHTML = inBand
+    ? `Inside your normal ${qState.pillar==='aor'?'AOR':'construction'} band (${lo*100}–${hi*100}%).`
+    : `<span style="color:var(--warn);font-weight:600">Outside your normal ${lo*100}–${hi*100}% band</span> — your call, the market's your read.`;
+  $('q_equiplist').innerHTML = qState.equip.length ? `<table>${qState.equip.map((e,i)=>
+    `<tr><td>${e.ton?e.ton+' Ton':''} ${e.name}<br><span style="color:var(--ink3);font-size:12px">${e.model}</span></td>
+     <td class="num">${fmt(e.cost)}</td><td style="width:40px"><button class="btn sm sec" onclick="qDelEquip(${i})">✕</button></td></tr>`).join('')}</table>`
+    : `<div class="note">No units added yet — pick from the dropdown above.</div>`;
+  const equipCost=qState.equip.reduce((s,e)=>s+e.cost,0);
+  const m=quoteMath(equipCost,qState.matCost,qState.laborHrs,qState.rentCost,qState.gm);
+  $('q_math').innerHTML=`
+    <div class="mr"><span class="lbl">Equipment w/ 7% tax</span><span>${fmt(m.eqTax)}</span></div>
+    <div class="mr"><span class="lbl">Materials w/ tax, ×1.18 surcharge</span><span>${fmt(m.matSur)}</span></div>
+    <div class="mr"><span class="lbl">Rentals w/ tax</span><span>${fmt(m.rentTax)}</span></div>
+    <div class="mr"><span class="lbl">Labor ${qState.laborHrs} hrs × $${CFG.laborRate} × ${CFG.laborOverhead} overhead</span><span>${fmt(m.laborOH)}</span></div>
+    <div class="mr"><span class="lbl">Total project cost</span><span>${fmt(m.totalCost)}</span></div>
+    <div class="mr tot"><span>Bid @ ${Math.round(qState.gm*100)}% GM</span><span>${fmt(m.bid)}</span></div>
+    <div class="mr"><span class="lbl">Profit</span><span style="color:var(--good);font-weight:650">${fmt(m.profit)}</span></div>`;
+  qOptions(m);
+}
+function qOptions(){
+  const box=document.getElementById('q_options');
+  if(!qState.equip.length){ box.innerHTML='<div class="note">Add a unit and the Good / Better / Best options build themselves — same tonnage, three tiers, customer-ready wording.</div>'; return; }
+  const base=qState.equip[0];
+  const seer = e => { const m=e.name.match(/(\d+)\s*SEER/); return m?+m[1]:0; };
+  let pool=EQUIPMENT.filter(e=>e.ton===base.ton && e.cost>500 && e.model.startsWith('5A') && seer(e)>0);
+  const bySeries={}; pool.forEach(e=>{ if(!bySeries[e.name]||e.cost<bySeries[e.name].cost) bySeries[e.name]=e; });
+  pool=Object.values(bySeries).sort((a,b)=>seer(a)-seer(b)||a.cost-b.cost);
+  if(pool.length<3){ box.innerHTML='<div class="note">Not enough same-tonnage alternatives in the loaded price-book sample for a three-option spread.</div>'; return; }
+  const picks=[pool[0], pool[Math.floor(pool.length/2)], pool[pool.length-1]];
+  const tiers=['Good','Better','Best'];
+  box.innerHTML='<h3 style="margin-top:0">Customer options — A / B / C</h3>'+`<div class="opt3">`+picks.map((e,i)=>{
+    const m=quoteMath(e.cost + qState.equip.slice(1).reduce((s,x)=>s+x.cost,0), qState.matCost,qState.laborHrs,qState.rentCost,qState.gm);
+    return `<div class="opt ${i===1?'rec':''}">
+      <div class="tier">${tiers[i]}${i===1?' · recommended':''}</div>
+      <div style="font-size:13px">${e.ton?e.ton+' Ton ':''}${e.name}</div>
+      <div class="price">${fmt0(m.bid)}</div>
+      <div class="vv">${verbiageFor(e.name)}</div>
+    </div>`;}).join('')+`</div>
+    <div class="note">Every line carries your value-added wording — comfort language, sixth-grade clear, per the July 17 session.</div>`;
+}
+
+/* --- Service Ticket --- */
+function rService(){
+  return `
+  <div class="card">
+    <h2 class="pillL">Service Ticket</h2>
+    <div class="row">
+      <div><label>Customer</label><input id="s_cust" placeholder="Name"></div>
+      <div><label>Type</label><select id="s_type" onchange="sCalc()"><option value="res">Residential</option><option value="com">Commercial</option></select></div>
+      <div><label>Hours beyond the first</label><input id="s_hrs" type="number" min="0" step="0.5" value="0" oninput="sCalc()"></div>
+      <div><label>Maintenance member?</label><select id="s_member" onchange="sCalc()"><option value="no">No</option><option value="yes">Yes — 15% off</option></select></div>
+    </div>
+    <h3>Parts (your cost — the system prices them at 50% margin: cost ÷ 0.5)</h3>
+    <div id="s_parts"></div>
+    <button class="btn sm sec" onclick="sAddPart()">+ Add part</button>
+    <div class="row" style="margin-top:16px">
+      <div class="mathbox" id="s_math" style="flex:1"></div>
+    </div>
+    <div class="note">Diagnostic fee covers the first hour including drive time. Rates are yours to edit in settings — overhead and margin already baked in; the system never recalculates them.</div>
+  </div>`;
+}
+let sParts=[{desc:'Capacitor', cost:18.50}];
+function sAddPart(){ sParts.push({desc:'',cost:0}); sCalc(); }
+function sDelPart(i){ sParts.splice(i,1); sCalc(); }
+function sCalc(){
+  const box=document.getElementById('s_parts'); if(!box) return;
+  box.innerHTML=sParts.map((p,i)=>`<div class="row" style="margin-bottom:6px">
+    <div style="flex:2"><input placeholder="Part description" value="${p.desc}" oninput="sParts[${i}].desc=this.value"></div>
+    <div><input type="number" min="0" step="0.01" value="${p.cost||''}" placeholder="Cost" oninput="sParts[${i}].cost=+this.value||0;sCalc()"></div>
+    <div style="flex:0 0 auto"><button class="btn sm sec" onclick="sDelPart(${i})">✕</button></div>
+  </div>`).join('');
+  const t=document.getElementById('s_type').value;
+  const diag = t==='res'?CFG.service.diagRes:CFG.service.diagCom;
+  const rate = t==='res'?CFG.service.hrRes:CFG.service.hrCom;
+  const hrs=+document.getElementById('s_hrs').value||0;
+  const labor=hrs*rate;
+  const partsCost=sParts.reduce((s,p)=>s+(p.cost||0),0);
+  const partsPrice=partsCost/(1-CFG.service.partsMargin);   // 50% MARGIN = cost × 2
+  let sub=diag+labor+partsPrice;
+  const member=document.getElementById('s_member').value==='yes';
+  const disc=member?sub*CFG.service.memberDisc:0;
+  sub-=disc;
+  const tax=sub*CFG.taxRate, total=sub+tax;
+  document.getElementById('s_math').innerHTML=`
+    <div class="mr"><span class="lbl">Diagnostic fee (first hour + drive time)</span><span>${fmt(diag)}</span></div>
+    <div class="mr"><span class="lbl">Labor: ${hrs} hrs × $${rate}</span><span>${fmt(labor)}</span></div>
+    <div class="mr"><span class="lbl">Parts at 50% margin (cost ${fmt(partsCost)} × 2)</span><span>${fmt(partsPrice)}</span></div>
+    ${member?`<div class="mr"><span class="lbl">Member discount −15%</span><span style="color:var(--good)">−${fmt(disc)}</span></div>`:''}
+    <div class="mr"><span class="lbl">NC sales tax 7%</span><span>${fmt(tax)}</span></div>
+    <div class="mr tot"><span>Ticket total</span><span>${fmt(total)}</span></div>
+    <div class="mr"><span class="lbl">Approval</span><span><button class="btn sm" onclick="alert('Timestamped: '+new Date().toLocaleString()+'\\n\\nCustomer approval recorded — the legal timestamp from your meeting. A fast-path (Don\\'t worry about the money) button will sit beside this for trusted accounts.')">Customer approves — timestamp</button></span></div>`;
+}
+
+/* --- Maintenance --- */
+function rMaint(){
+  return `
+  <div class="card" style="margin-bottom:18px">
+    <h2 class="pillL">New Maintenance Agreement</h2>
+    <div class="row">
+      <div><label>Customer</label><input id="m_cust" placeholder="Name"></div>
+      <div><label>Type</label><select id="m_type" onchange="mCalc()"><option value="res">Residential — biannual visits</option><option value="com">Commercial — quarterly available</option></select></div>
+      <div><label>HVAC systems</label><input id="m_sys" type="number" min="1" value="1" oninput="mCalc()"></div>
+    </div>
+    <div class="row" style="margin-top:12px;align-items:flex-start">
+      <div class="mathbox" id="m_math" style="flex:1"></div>
+      <div style="flex:1.2">
+        <div class="note" style="margin-top:0"><b>What happens on signing (the couch idea, live):</b> the customer taps Agree, pays by link, and the system instantly offers two visit dates — six months apart for residential — with confirm/reschedule links. Nobody at the shop touches a calendar. Renewal reminders queue automatically at month 11.</div>
+        <button class="btn" style="margin-top:10px" onclick="mSign()">Sign & Auto-Schedule →</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:18px">
+    <h2>Active agreements</h2>
+    <table><tr><th>Customer</th><th>Type</th><th class="num">Systems</th><th class="num">Annual (pre-tax)</th><th>Visit 1</th><th>Visit 2</th><th>Status</th></tr>
+      <tbody id="m_list"></tbody></table>
+  </div>
+  <div class="card">
+    <h2>The 20-point service checklist <span style="font-weight:400;font-size:12px;color:var(--ink3)">— straight from your contract; becomes the tech's on-site tap list</span></h2>
+    <ol class="checklist">
+      <li>Clean/replace air filters</li><li>Clear clogs, clean drain lines</li><li>Clean evaporator coils & condensers</li>
+      <li>Replace worn pulleys & belts</li><li>Test compressors, capacitors, relays</li><li>Check refrigerant charge & leaks (≤1 lb R-410A; R-22 excluded)</li>
+      <li>Inspect ducts (dust, mold, debris)</li><li>Check fan motors</li><li>Clear debris at outdoor unit</li><li>Lubricate moving parts</li>
+      <li>Heating system maintenance check</li><li>Examine ignition burner assembly</li><li>Inspect heat exchanger / heating elements</li>
+      <li>Gas leak inspection (gas furnaces)</li><li>Gas pressure check (gas furnaces)</li><li>Clean blower fan & air box</li>
+      <li>Thermostat & control calibration</li><li>Clear drain pans</li><li>Warranty coverage check on major parts</li><li>IAQ products check (UV, purifiers, humidifiers)</li>
+    </ol>
+  </div>`;
+}
+function maintPrice(type,sys){ return type==='res' ? CFG.maint.res1+(sys-1)*CFG.maint.resAddl : CFG.maint.com1+(sys-1)*CFG.maint.comAddl; }
+function mCalc(){
+  const type=document.getElementById('m_type').value, sys=Math.max(1,+document.getElementById('m_sys').value||1);
+  const pre=maintPrice(type,sys), tax=pre*CFG.taxRate;
+  document.getElementById('m_math').innerHTML=`
+    <div class="mr"><span class="lbl">${type==='res'?'Residential':'Commercial'} — first system</span><span>${fmt(type==='res'?CFG.maint.res1:CFG.maint.com1)}</span></div>
+    ${sys>1?`<div class="mr"><span class="lbl">${sys-1} additional × ${fmt(type==='res'?CFG.maint.resAddl:CFG.maint.comAddl)}</span><span>${fmt((sys-1)*(type==='res'?CFG.maint.resAddl:CFG.maint.comAddl))}</span></div>`:''}
+    <div class="mr"><span class="lbl">NC sales tax 7%</span><span>${fmt(tax)}</span></div>
+    <div class="mr tot"><span>Billed annually at signing</span><span>${fmt(pre+tax)}</span></div>
+    <div class="mr"><span class="lbl">Member perk</span><span>15% off repairs & change-outs</span></div>`;
+  mList();
+}
+function mList(){
+  const tb=document.getElementById('m_list'); if(!tb) return;
+  tb.innerHTML=agreements.map(a=>`<tr><td>${a.cust}</td>
+    <td><span class="chip ${a.type}">${a.type==='res'?'Residential':'Commercial'}</span></td>
+    <td class="num">${a.systems}</td><td class="num">${fmt(maintPrice(a.type,a.systems))}</td>
+    <td>${a.v1} <span class="chip pend">confirm</span></td><td>${a.v2} <span class="chip pend">confirm</span></td>
+    <td><span class="chip ok">active</span></td></tr>`).join('');
+}
+function mSign(){
+  const cust=document.getElementById('m_cust').value||'New Customer';
+  const type=document.getElementById('m_type').value, sys=Math.max(1,+document.getElementById('m_sys').value||1);
+  const d1=new Date(); d1.setDate(d1.getDate()+14);
+  const d2=new Date(d1); d2.setMonth(d2.getMonth()+(type==='res'?6:3));
+  const f=d=>d.toISOString().slice(0,10);
+  agreements.push({id:agreements.length+1,cust,type,systems:sys,signed:f(new Date()),v1:f(d1),v2:f(d2),status:'active'});
+  mCalc();
+  alert(`Agreement signed for ${cust}.\n\nPayment link sent. Two visits auto-offered:\n• ${f(d1)}\n• ${f(d2)}\n\nCustomer confirms or reschedules by text link — the ball is in their court, exactly as designed.`);
+}
+
+/* --- Leads --- */
+function rLeads(){
+  return `
+  <div class="card" style="margin-bottom:18px">
+    <h2 class="pillL">New Lead — Intake</h2>
+    <div class="row">
+      <div><label>Name</label><input id="l_name" placeholder="Customer / company"></div>
+      <div><label>Phone</label><input id="l_phone" placeholder="(828) ..."></div>
+      <div><label>Category</label><select id="l_cat">
+        <option>Service / Maintenance</option><option>AOR / Change-out</option><option>Construction</option>
+      </select></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div style="flex:3"><label>Notes</label><input id="l_note" placeholder="What do they need?"></div>
+      <div style="flex:0 0 auto;align-self:end"><button class="btn" onclick="lAdd()">Route it →</button></div>
+    </div>
+    <div class="note">Routing is automatic: Service & Maintenance → <b>Zach</b> · AOR and Construction → <b>Josh / Ralph</b>. Any of the three phone answerers can capture a complete lead in under a minute.</div>
+  </div>
+  <div class="card">
+    <h2>Lead queue</h2>
+    <table><tr><th>When</th><th>Name</th><th>Phone</th><th>Category</th><th>Routed to</th><th>Notes</th></tr>
+    ${leads.map(l=>`<tr><td>${l.when}</td><td>${l.name}</td><td>${l.phone}</td><td>${l.cat}</td><td><b>${l.to}</b></td><td style="color:var(--ink2)">${l.note}</td></tr>`).join('')}
+    </table>
+  </div>`;
+}
+function lAdd(){
+  const cat=document.getElementById('l_cat').value;
+  const to = cat.startsWith('Service') ? 'Zach' : 'Josh / Ralph';
+  leads.unshift({id:leads.length+1,name:document.getElementById('l_name').value||'—',
+    phone:document.getElementById('l_phone').value||'—',cat,
+    pillar:cat.startsWith('Service')?'Service':(cat.startsWith('AOR')?'AOR':'Construction'),
+    to,when:'Just now',note:document.getElementById('l_note').value||''});
+  render();
+}
+
+nav(); render();
+</script>
+</body>
+</html>
