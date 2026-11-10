@@ -72,7 +72,7 @@
 
   /* PROOF CARDS */
   .cards { display: grid; grid-template-columns: 1fr; gap: 28px; }
-  @media (min-width: 860px) { .cards { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 860px) { .cards { grid-template-columns: repeat(2, 1fr); } }
   .card {
     background: linear-gradient(160deg, #1a1a24, #101018);
     border: 1px solid rgba(201,162,39,0.25);
@@ -100,6 +100,8 @@
     font-size: 0.9rem; letter-spacing: 0.04em;
   }
   .card a.visit:hover { text-decoration: underline; }
+  .card .pull { margin-top: auto; padding: 14px 16px; border-left: 3px solid var(--gold); background: rgba(201,162,39,0.06); border-radius: 0 8px 8px 0; font-size: 0.92rem; font-style: italic; color: rgba(244,244,244,0.88); }
+  .card .pull span { display: block; margin-top: 8px; font-style: normal; font-size: 0.82rem; color: var(--gold); letter-spacing: 0.04em; }
 
   /* HOW I WORK */
   .principles { display: grid; grid-template-columns: 1fr; gap: 22px; max-width: 820px; margin: 0 auto; }
@@ -142,6 +144,7 @@
     border: 1px dashed rgba(201,162,39,0.4); border-radius: 12px;
     padding: 34px 28px; color: var(--gray); font-style: italic;
   }
+  .quote-box + .quote-box { margin-top: 28px; }
 
   /* CTA */
   .cta { text-align: center; }
@@ -213,6 +216,19 @@
         <div style="position:relative;width:100%;aspect-ratio:16/9;margin:4px 0 8px;border-radius:10px;overflow:hidden;border:1px solid rgba(201,162,39,0.25);"><iframe src="https://www.youtube-nocookie.com/embed/5bETj9LGMmM" title="FieldStake: From Site Visit to Proposal" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
         <p style="font-size:0.85rem;color:var(--gray);margin:0 0 16px;">Watch a real FieldStake quote, start to finish (3½ min).</p>
         <a class="visit" href="https://greenspanlandscapingcompany.com" target="_blank" rel="noopener">See it live →</a>
+      </div>
+
+      <div class="card">
+        <div class="kicker">Field Operations</div>
+        <h3>WNC Climate Control</h3>
+        <div class="place">Weaverville, NC · Heating &amp; air</div>
+        <p>An HVAC contractor that replaced a handful of separate apps with one system built around how the company works, in the office and in the field.</p>
+        <ul>
+          <li>Quoting, flat-rate pricing, and service calls and tickets in one place</li>
+          <li>Customer and project portfolios, with maintenance agreements created and tracked alongside them</li>
+          <li>Job costing and time cards, with access set employee by employee</li>
+        </ul>
+        <div class="pull">&ldquo;The ability to have this all under one system gave us so much more efficiency in the office and the field.&rdquo;<span>&mdash; Josh Crowder, Owner</span></div>
       </div>
 
       <div class="card">
@@ -309,7 +325,7 @@
     <div class="about-wrap">
       <p><strong>Kevin Greenspan</strong> is not a consultant who read about business in a book. For thirty-four years he has run a second-generation healthcare practice in the North Carolina mountains — his father opened it in 1981; Kevin joined him in 1992 and built it into a practice in a town of 8,000 that grossed <strong>$2 million a year out of 2,000 square feet</strong>. In a cash practice there's nowhere to hide: if the phone wasn't answered, the schedule wasn't full, and the follow-up didn't happen, that was his problem, personally, that night. He got good at systems because he had to. Before the practice: building a car-detailing operation in South Florida, surviving a rental-property loss in 2009 that taught more than any MBA could, and finishing an eight-year degree — undergrad and graduate school stacked on top of each other — in six and a half years, while tutoring organic chemistry to undergraduates and starting to raise a family, because tuition was money and money was earned.</p>
       <p>Today he works with established business owners across Western North Carolina — especially owners thinking about what their business becomes when they're ready to step back — bringing modern systems to Main-Street companies without the Silicon Valley nonsense.</p>
-      <p>The rule that governs everything: <strong>if we wouldn't run it in our own family's businesses, we don't put it in yours.</strong> The three businesses above aren't clients we found. They're the proof we built first.</p>
+      <p>The rule that governs everything: <strong>if we wouldn't run it in our own family's businesses, we don't put it in yours.</strong> We built the first of these for our own family's businesses before we built for anyone else. That's the proof we started with.</p>
     </div>
   </div>
 </section>
@@ -321,6 +337,10 @@
     <div class="quote-box">
       &ldquo;Working with Kevin has been like working with a friend with your best interest at heart. He has shown us a very user-friendly path to not only improve our business flow, but to also increase customer base and profits. By building a website and implementing an inventory system, our sales have increased. Our workflow has improved, and the time we spend at work is more dedicated to the customers where it needs to be. The assignments he gave us on how to improve our social media presence have not only been effective but fun &mdash; and he&rsquo;s made the process smooth and stress-free.&rdquo;
       <div style="margin-top:18px; font-style:normal; color:var(--gold); letter-spacing:0.04em;">&mdash; Sheila, Owner &middot; Earth Heart</div>
+    </div>
+    <div class="quote-box">
+      &ldquo;Working with Greenspan Business Growth Systems has been a wonderful experience. Extreme professionalism and understanding of business systems. Together we have created an App/Platform that WNC Climate Control can use for multiple purposes such as Quoting, Service Calls/Tickets, Flat Rate Price Creation, Customer Portfolios, Project Portfolios, Maintenance Agreement Creation/Tracking, Job Costing, Time Card and Employee access to designated employees. The ability to have this all under one system gave us so much more efficiency in the office and the field. Highly recommend this service to anyone looking to scale a business without needing multiple apps to accomplish scaling.&rdquo;
+      <div style="margin-top:18px; font-style:normal; color:var(--gold); letter-spacing:0.04em;">&mdash; Josh Crowder, Owner &middot; WNC Climate Control</div>
     </div>
   </div>
 </section>
