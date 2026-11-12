@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (GBGS website, GA4) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-TDHTZ9LV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>For HVAC shop owners — Greenspan Business Growth Systems</title>
@@ -158,5 +165,12 @@
   <p style="margin-top:8px"><a href="/">Greenspan Business Growth Systems</a> · Western North Carolina</p>
 </footer>
 
+<script>
+  // Count clicks on the walkthrough buttons as a GA4 event.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a.btn');
+    if (a) { gtag('event', 'walkthrough_click', { button_position: a.id }); }
+  });
+</script>
 </body>
 </html>
