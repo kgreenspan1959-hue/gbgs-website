@@ -73,6 +73,20 @@
   }
   .btn:hover { background: var(--gold-light); }
   .note { color: var(--gray); font-size: 0.9rem; margin-top: 12px; }
+  .proof {
+    position: relative; max-width: 860px; margin: 28px auto 0; text-align: left;
+    background: linear-gradient(180deg, #1b1a14 0%, var(--charcoal) 100%);
+    border: 1px solid var(--gold); border-left: 6px solid var(--gold);
+    border-radius: 10px; padding: 30px 30px 24px 30px;
+    box-shadow: 0 10px 34px rgba(201,162,39,0.14);
+  }
+  .proof .label { color: var(--gold); font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+  .proof .mark { position: absolute; top: -6px; right: 22px; font-size: 6rem; line-height: 1; color: var(--gold); opacity: 0.35; font-family: Georgia, serif; }
+  .proof blockquote { font-size: 1.05rem; color: #dcdce2; line-height: 1.7; }
+  .proof blockquote strong { display: block; font-weight: normal; color: var(--gold-light); font-size: clamp(1.25rem, 3vw, 1.6rem); line-height: 1.35; margin: 2px 0 14px; }
+  .proof .who { margin-top: 16px; color: var(--white); font-size: 1rem; }
+  .proof .who span { color: var(--gray); }
+  .proof .who a { color: var(--gray); }
   section.problems { padding: 56px 0 24px; }
   h2 {
     text-align: center; font-weight: normal; font-size: clamp(1.4rem, 3.4vw, 2rem); margin-bottom: 10px;
@@ -102,6 +116,9 @@
   @media (max-width: 760px) {
     .grid { grid-template-columns: 1fr; }
     .hero { padding-top: 16px; }
+    .proof { padding: 24px 20px 20px 22px; }
+    .proof .label { padding-right: 56px; }
+    .proof .mark { font-size: 4.5rem; right: 14px; }
   }
 </style>
 </head>
@@ -119,6 +136,15 @@
     <div class="video">
       <iframe src="https://www.youtube-nocookie.com/embed/dexsO4Y86vY?rel=0&amp;modestbranding=1" title="Three office problems HVAC shop owners tell me about" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
     </div>
+    <figure class="proof">
+      <div class="mark" aria-hidden="true">&ldquo;</div>
+      <div class="label">From an HVAC owner who runs on it</div>
+      <blockquote>
+        <strong>&ldquo;The ability to have this all under one system gave us so much more efficiency in the office and the field.&rdquo;</strong>
+        &ldquo;Working with Greenspan Business Growth Systems has been a wonderful experience. Extreme professionalism and understanding of business systems. Together we have created an App/Platform that WNC Climate Control can use for multiple purposes such as Quoting, Service Calls/Tickets, Flat Rate Price Creation, Customer Portfolios, Project Portfolios, Maintenance Agreement Creation/Tracking, Job Costing, Time Card and Employee access to designated employees. &hellip; Highly recommend this service to anyone looking to scale a business without needing multiple apps to accomplish scaling.&rdquo;
+      </blockquote>
+      <figcaption class="who">Josh Crowder, Owner <span>&middot; <a href="https://wncclimatecontrol.com" target="_blank" rel="noopener">WNC Climate Control</a>, Weaverville, NC</span></figcaption>
+    </figure>
     <a class="btn" id="cta-top" href="mailto:kevin@greenspanbusinessgrowthsystems.com?subject=15-minute%20walkthrough%20for%20my%20HVAC%20shop">Request a 15-minute walkthrough</a>
     <div class="note">Or email kevin@greenspanbusinessgrowthsystems.com</div>
   </div>
