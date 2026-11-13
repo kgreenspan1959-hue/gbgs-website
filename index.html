@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (GBGS website, GA4) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-TDHTZ9LV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Greenspan Business Growth Systems — Strategy First | Technology Second | Growth Always</title>
@@ -381,6 +388,13 @@
     frames[i].addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(this); } });
   }
 })();
+</script>
+<script>
+  // Count clicks on email links (Strategy Session requests) as a GA4 event.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="mailto:"]');
+    if (a) { gtag('event', 'contact_click', { link_text: (a.textContent || '').trim().slice(0, 60) }); }
+  });
 </script>
 </body>
 </html>
