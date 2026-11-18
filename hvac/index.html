@@ -11,7 +11,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>For HVAC shop owners — Greenspan Business Growth Systems</title>
-<meta name="description" content="Kevin Greenspan on three office problems heating and air shop owners deal with: quotes that go quiet, Friday time cards, and not knowing whether a job made money.">
+<meta name="description" content="One system for an HVAC shop's quotes, time cards and job costing, built with a working heating and air company and set up around how your shop runs.">
 <style>
   :root {
     --black: #0a0a0f;
@@ -90,7 +90,36 @@
   .proof .who { margin-top: 16px; color: var(--white); font-size: 1rem; }
   .proof .who span { color: var(--gray); }
   .proof .who a { color: var(--gray); }
-  section.problems { padding: 56px 0 24px; }
+
+  .sub { margin-bottom: 18px; }
+  .stars { margin: 0 auto 4px; max-width: 640px; }
+  .stars .s { color: var(--gold-light); font-size: 1.25rem; letter-spacing: 0.12em; display: block; }
+  .stars .q { color: var(--white); font-style: italic; font-size: 1.08rem; display: block; margin-top: 2px; }
+  .stars .w { color: var(--gray); font-size: 0.88rem; display: block; margin-top: 2px; }
+  .hero .btn { margin-top: 18px; }
+  .note a { color: var(--gold-light); text-decoration: none; font-weight: bold; white-space: nowrap; }
+  .hero .video { margin-top: 26px; cursor: pointer; }
+  .video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .video .play { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%; background: rgba(10,10,15,0.72); border: 2px solid var(--gold); }
+  .video .play::after { content: ""; position: absolute; left: 30px; top: 22px; border-left: 22px solid var(--gold-light); border-top: 15px solid transparent; border-bottom: 15px solid transparent; }
+  .video .len { position: absolute; right: 12px; top: 10px; background: rgba(10,10,15,0.8); color: var(--white); font-size: 0.85rem; padding: 3px 9px; border-radius: 4px; font-family: Arial, Helvetica, sans-serif; }
+  .vidnote { color: var(--gray); font-size: 0.86rem; margin-top: 10px; }
+  section.fit { padding: 52px 0 8px; }
+  .fitbox { max-width: 760px; margin: 0 auto; }
+  .fitbox p { font-size: 1.06rem; color: #dcdce2; }
+  .fitbox p + p { margin-top: 14px; }
+  .fitbox .plain { color: var(--gray); font-size: 0.98rem; border-left: 3px solid var(--gold-dim); padding-left: 16px; margin-top: 20px; }
+  section.proofs { padding: 44px 0 8px; }
+  .proof + .proof { margin-top: 22px; }
+  .proof .gstars { color: var(--gold-light); letter-spacing: 0.12em; font-size: 1.1rem; margin-bottom: 6px; }
+  .steps { max-width: 760px; margin: 0 auto; text-align: left; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; position: relative; padding: 0 0 20px 54px; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-light); text-align: center; line-height: 34px; font-size: 1rem; }
+  .steps strong { display: block; font-weight: normal; font-size: 1.2rem; color: var(--white); }
+  .steps span { color: #d6d6dc; font-size: 1rem; }
+  section.start .who-i-am { max-width: 760px; margin: 0 auto 26px; font-size: 1.08rem; color: #dcdce2; }
+  section.start .btn { margin-top: 12px; }
+  section.problems { padding: 44px 0 24px; }
   h2 {
     text-align: center; font-weight: normal; font-size: clamp(1.4rem, 3.4vw, 2rem); margin-bottom: 10px;
   }
@@ -134,25 +163,34 @@
 <section class="hero">
   <div class="container">
     <div class="kicker">For heating and air shop owners</div>
-    <h1>Less time on paperwork. More time closing jobs.</h1>
-    <p class="sub">If your nights go to writing quotes and your Fridays go to chasing time cards, this one-minute video shows what it looks like when the office stops eating your week.</p>
-    <div class="pull">
-      <p>&ldquo;The ability to have this all under one system gave us so much more efficiency in the office and the field.&rdquo;</p>
-      <div class="pull-who">Josh Crowder, Owner &middot; WNC Climate Control, Weaverville, NC</div>
+    <h1>Get the office side of your HVAC shop off paper.</h1>
+    <p class="sub">Quotes, time cards and job costing in one system, built with a working heating and air shop and set up around how yours runs.</p>
+    <div class="stars">
+      <span class="s" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      <span class="q">&ldquo;Its all in one place, no more multiple apps. 100% Approval from us.&rdquo;</span>
+      <span class="w">Josh Crowder, Owner &middot; WNC Climate Control &middot; Google review</span>
     </div>
-    <div class="video">
-      <iframe src="https://www.youtube-nocookie.com/embed/dexsO4Y86vY?rel=0&amp;modestbranding=1" title="Three office problems HVAC shop owners tell me about" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
-    </div>
-    <figure class="proof">
-      <div class="mark" aria-hidden="true">&ldquo;</div>
-      <div class="label">In his words</div>
-      <blockquote>
-        &ldquo;Working with Greenspan Business Growth Systems has been a wonderful experience. Extreme professionalism and understanding of business systems. Together we have created an App/Platform that WNC Climate Control can use for multiple purposes such as Quoting, Service Calls/Tickets, Flat Rate Price Creation, Customer Portfolios, Project Portfolios, Maintenance Agreement Creation/Tracking, Job Costing, Time Card and Employee access to designated employees. The ability to have this all under one system gave us so much more efficiency in the office and the field. Highly recommend this service to anyone looking to scale a business without needing multiple apps to accomplish scaling.&rdquo;
-      </blockquote>
-      <figcaption class="who">Josh Crowder, Owner <span>&middot; <a href="https://wncclimatecontrol.com" target="_blank" rel="noopener">WNC Climate Control</a>, Weaverville, NC</span></figcaption>
-    </figure>
     <a class="btn" id="cta-top" href="mailto:kevin@greenspanbusinessgrowthsystems.com?subject=15-minute%20walkthrough%20for%20my%20HVAC%20shop">Request a 15-minute walkthrough</a>
-    <div class="note">Or email kevin@greenspanbusinessgrowthsystems.com</div>
+    <div class="note">Or call Kevin at <a href="tel:+18286913551" id="call-top">(828) 691-3551</a></div>
+    <div class="video" id="vid" role="button" tabindex="0" aria-label="Play the one-minute video">
+      <img src="poster.jpg" width="1280" height="720" alt="Kevin Greenspan in the one-minute video">
+      <span class="play" aria-hidden="true"></span>
+      <span class="len">Watch &middot; 1:12</span>
+    </div>
+    <div class="vidnote">One minute, from me to you. The screens show a demonstration company with fictional data.</div>
+  </div>
+</section>
+
+<section class="fit">
+  <div class="container">
+    <h2>Who this fits</h2>
+    <div class="rule"></div>
+    <div class="fitbox">
+      <p>It works best for an owner-run heating and air shop, from a handful of people up to about twenty, where the office still runs on paper, spreadsheets and text messages, and most of it runs through you.</p>
+      <p>You keep the accounting and payroll software you already use. This handles what happens before the numbers get there: the quote, the job, the hours, and what the job really cost.</p>
+      <p>It isn't an app you download and figure out alone. I set it up with you, around the way your shop already quotes, runs jobs and tracks hours, and you deal with me directly.</p>
+      <p class="plain">Plainly: it doesn't take card payments or send invoices, and it doesn't connect to your accounting or payroll software. If you need those built in today, this isn't the right fit, and I'll tell you so on the call.</p>
+    </div>
   </div>
 </section>
 
@@ -183,12 +221,42 @@
   </div>
 </section>
 
+<section class="proofs">
+  <div class="container">
+    <h2>From a shop that runs on it</h2>
+    <div class="rule"></div>
+    <figure class="proof">
+      <div class="mark" aria-hidden="true">&ldquo;</div>
+      <div class="label">His Google review</div>
+      <div class="gstars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <blockquote>
+        &ldquo;I own WNC Climate control, LLC and we have been creating and utilizing the systems that Greenspan Business Growth Systems offers and we have been nothing but pleased. Complete adaptability to what ever business you run. This has increased our efficiency and ability to sale quickly on site in real time. No more waiting for quote approvals. Then to top it off, i can see in real time all my costs versus budgets for every job, service call, agreement, and company wide snapshots. Its all in one place, no more multiple apps. 100% Approval from us.&rdquo;
+      </blockquote>
+      <figcaption class="who">Josh Crowder, Owner <span>&middot; <a href="https://wncclimatecontrol.com" target="_blank" rel="noopener">WNC Climate Control</a>, Weaverville, NC &middot; <a href="https://g.page/r/Cf7VD4p2yU6oEBM" target="_blank" rel="noopener">read it on Google</a></span></figcaption>
+    </figure>
+    <figure class="proof">
+      <div class="mark" aria-hidden="true">&ldquo;</div>
+      <div class="label">In his words</div>
+      <blockquote>
+        &ldquo;Working with Greenspan Business Growth Systems has been a wonderful experience. Extreme professionalism and understanding of business systems. Together we have created an App/Platform that WNC Climate Control can use for multiple purposes such as Quoting, Service Calls/Tickets, Flat Rate Price Creation, Customer Portfolios, Project Portfolios, Maintenance Agreement Creation/Tracking, Job Costing, Time Card and Employee access to designated employees. The ability to have this all under one system gave us so much more efficiency in the office and the field. Highly recommend this service to anyone looking to scale a business without needing multiple apps to accomplish scaling.&rdquo;
+      </blockquote>
+      <figcaption class="who">Josh Crowder, Owner <span>&middot; WNC Climate Control, Weaverville, NC</span></figcaption>
+    </figure>
+  </div>
+</section>
+
 <section class="start">
   <div class="container">
-    <h2>How I'd start</h2>
+    <h2>How we'd work together</h2>
     <div class="rule"></div>
-    <p>Every shop runs differently. I'd start by asking how yours works today, what you're tired of chasing, and which tools you need to keep. Fifteen minutes, no pitch deck.</p>
+    <p class="who-i-am">I'm Kevin Greenspan. I build office systems for trades businesses, and I started with my own family's. Here is how it goes.</p>
+    <ol class="steps">
+      <li><strong>A 15-minute call</strong><span>I'll have looked at your shop before we talk, so the time goes to how yours runs today and what you're tired of chasing. I'll show you the system using a demonstration company.</span></li>
+      <li><strong>A one-page proposal</strong><span>If it looks like a fit, you get a plain proposal: what setup includes, what it costs, and how we'd pick a start date. After setup it's month to month.</span></li>
+      <li><strong>A straight answer</strong><span>If it isn't a fit, I'll tell you. No pitch deck either way.</span></li>
+    </ol>
     <a class="btn" id="cta-bottom" href="mailto:kevin@greenspanbusinessgrowthsystems.com?subject=15-minute%20walkthrough%20for%20my%20HVAC%20shop">Request a 15-minute walkthrough</a>
+    <div class="note">Or call Kevin at <a href="tel:+18286913551" id="call-bottom">(828) 691-3551</a> &middot; kevin@greenspanbusinessgrowthsystems.com</div>
   </div>
 </section>
 
@@ -198,11 +266,27 @@
 </footer>
 
 <script>
-  // Count clicks on the walkthrough buttons as a GA4 event.
+  // Count walkthrough clicks, call taps and video plays as GA4 events.
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a.btn');
+    if (!e.target.closest) return;
+    var a = e.target.closest('a.btn');
     if (a) { gtag('event', 'walkthrough_click', { button_position: a.id }); }
+    var c = e.target.closest('a[href^="tel:"]');
+    if (c) { gtag('event', 'call_click', { button_position: c.id }); }
   });
+  (function () {
+    var v = document.getElementById('vid');
+    function play() {
+      if (v.getAttribute('data-on')) return;
+      v.setAttribute('data-on', '1');
+      var mute = /[?&]mute=1/.test(location.search) ? '&mute=1' : '';
+      v.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/dexsO4Y86vY?rel=0&modestbranding=1&autoplay=1' + mute + '" title="Three office problems HVAC shop owners tell me about" allow="autoplay; accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+      v.style.cursor = 'default';
+      gtag('event', 'video_play', { video_title: 'HVAC overview' });
+    }
+    v.addEventListener('click', play);
+    v.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
+  })();
 </script>
 </body>
 </html>
