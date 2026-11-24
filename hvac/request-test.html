@@ -313,7 +313,7 @@
         <p class="hint">Phone or email, whichever you'd rather I use.</p>
         <label for="f-note">What are you most tired of chasing? <span>(optional)</span></label>
         <textarea id="f-note" name="note"></textarea>
-        <div class="hp" aria-hidden="true"><label for="f-hp">Leave this empty</label><input id="f-hp" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>
+        <div class="hp" aria-hidden="true"><label for="f-hp">Leave this empty</label><input id="f-hp" name="botcheck" type="text" tabindex="-1" autocomplete="off"></div>
         <button class="btn" id="req-send" type="submit">Send my request</button>
         <p class="err" id="req-err" role="alert"></p>
         <p class="fine">It comes to me, Kevin. I use it only to set up the call. No mailing list.</p>
@@ -345,7 +345,8 @@
   });
   // Walkthrough request form: sends to Kevin's inbox, counts one GA4 event per request.
   (function () {
-    var ENDPOINT = 'https://formsubmit.co/ajax/kevin@greenspanbusinessgrowthsystems.com';
+    var ENDPOINT = 'https://api.web3forms.com/submit';
+    var KEY = '31cccd24-bca1-424e-88d7-62ebb6dc35ea'; // public form key, not a password
     var form = document.getElementById('req-form');
     var done = document.getElementById('req-done');
     var err = document.getElementById('req-err');
@@ -369,17 +370,18 @@
       if (!d.name || !d.shop || !d.town) { showErr('Please add your name, your shop and your town.'); return; }
       if (!d.phone && !d.email) { showErr('Please add a phone number or an email so I can reach you.'); return; }
       if (d.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)) { showErr('That email address looks incomplete.'); return; }
-      if (val('_honey')) { finish(); return; }
+      if (val('botcheck')) { finish(); return; }
       btn.disabled = true; btn.textContent = 'Sending\u2026';
       var body = {
         'Name': d.name, 'Shop': d.shop, 'Town and state': d.town,
         'Phone': d.phone || '(not given)', 'Email': d.email || '(not given)',
         'Most tired of chasing': d.note || '(left blank)',
         'Came from': src, 'Page': location.pathname,
-        _subject: 'HVAC walkthrough request: ' + d.shop + ' (' + d.town + ')',
-        _template: 'table', _captcha: 'false'
+        access_key: KEY,
+        subject: 'HVAC walkthrough request: ' + d.shop + ' (' + d.town + ')',
+        from_name: 'GBGS HVAC page'
       };
-      if (d.email) { body._replyto = d.email; }
+      if (d.email) { body.replyto = d.email; }
       function failed() {
         btn.disabled = false; btn.textContent = 'Send my request';
         var mail = 'mailto:kevin@greenspanbusinessgrowthsystems.com?subject=' + encodeURIComponent('15-minute walkthrough for ' + d.shop) +
@@ -387,15 +389,19 @@
         showErr('That didn\u2019t go through on my end. Please <a href="' + mail + '">send it by email</a> or call me at <a href="tel:+18286913551">(828) 691-3551</a>.');
         gtag('event', 'walkthrough_request_error', { lead_source: src });
       }
-      fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body) })
+      // Give the mail service 15 seconds, then offer email and phone instead of leaving the visitor waiting.
+      var ctl = ('AbortController' in window) ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
+      fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined })
         .then(function (r) { return r.json(); })
         .then(function (j) {
+          clearTimeout(timer);
           if (j && (j.success === true || j.success === 'true')) {
             gtag('event', 'walkthrough_request', { lead_source: src });
             finish();
           } else { failed(); }
         })
-        .catch(failed);
+        .catch(function () { clearTimeout(timer); failed(); });
     });
   })();
   (function () {
