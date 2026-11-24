@@ -145,7 +145,35 @@
     font-size: 0.88rem;
   }
   footer a { color: var(--gray); }
+  html { scroll-behavior: smooth; }
+  .req {
+    max-width: 580px; margin: 30px auto 0; text-align: left;
+    background: var(--charcoal); border: 1px solid var(--gold); border-radius: 10px;
+    padding: 28px 26px 24px; scroll-margin-top: 16px;
+  }
+  .req h3 { font-weight: normal; font-size: 1.4rem; text-align: center; margin-bottom: 4px; }
+  section.start .req p.lead { color: var(--gray); font-size: 0.98rem; text-align: center; margin: 0 auto 10px; }
+  .req label { display: block; font-family: Arial, Helvetica, sans-serif; font-size: 0.9rem; color: #dcdce2; margin: 14px 0 5px; }
+  .req label span { color: var(--gray); }
+  .req input, .req textarea {
+    width: 100%; padding: 12px 12px; font-size: 16px; font-family: Arial, Helvetica, sans-serif;
+    background: #0f0f15; color: var(--white); border: 1px solid #3a3a46; border-radius: 6px;
+  }
+  .req textarea { min-height: 84px; resize: vertical; }
+  .req input:focus, .req textarea:focus { outline: none; border-color: var(--gold); }
+  .req .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  section.start .req p.hint { font-family: Arial, Helvetica, sans-serif; color: var(--gray); font-size: 0.84rem; margin: 6px 0 0; }
+  .req button.btn { width: 100%; border: 0; cursor: pointer; margin-top: 20px; }
+  .req button.btn[disabled] { opacity: 0.6; cursor: default; }
+  section.start .req p.fine { color: var(--gray); font-size: 0.84rem; text-align: center; margin: 12px auto 0; }
+  .req .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  section.start .req p.err { display: none; color: #ffb4a8; font-family: Arial, Helvetica, sans-serif; font-size: 0.95rem; margin: 14px 0 0; }
+  .req .done { display: none; text-align: center; }
+  section.start .req .done p { font-size: 1.08rem; color: #dcdce2; margin: 8px auto 0; }
+  .req .done .tick { color: var(--gold-light); font-size: 2rem; line-height: 1; }
   @media (max-width: 760px) {
+    .req { padding: 24px 18px 20px; }
+    .req .two { grid-template-columns: 1fr; gap: 0; }
     .grid { grid-template-columns: 1fr; }
     .hero { padding-top: 16px; }
     .proof { padding: 24px 20px 20px 22px; }
@@ -170,7 +198,7 @@
       <span class="q">&ldquo;Its all in one place, no more multiple apps. 100% Approval from us.&rdquo;</span>
       <span class="w">Josh Crowder, Owner &middot; WNC Climate Control &middot; Google review</span>
     </div>
-    <a class="btn" id="cta-top" href="mailto:kevin@greenspanbusinessgrowthsystems.com?subject=15-minute%20walkthrough%20for%20my%20HVAC%20shop">Request a 15-minute walkthrough</a>
+    <a class="btn" id="cta-top" href="#request">Request a 15-minute walkthrough</a>
     <div class="note">Or call Kevin at <a href="tel:+18286913551" id="call-top">(828) 691-3551</a></div>
     <div class="video" id="vid" role="button" tabindex="0" aria-label="Play the one-minute video">
       <img src="poster.jpg" width="1280" height="720" alt="Kevin Greenspan in the one-minute video">
@@ -255,8 +283,48 @@
       <li><strong>A one-page proposal</strong><span>If it looks like a fit, you get a plain proposal: what setup includes, what it costs, and how we'd pick a start date. After setup it's month to month.</span></li>
       <li><strong>A straight answer</strong><span>If it isn't a fit, I'll tell you. No pitch deck either way.</span></li>
     </ol>
-    <a class="btn" id="cta-bottom" href="mailto:kevin@greenspanbusinessgrowthsystems.com?subject=15-minute%20walkthrough%20for%20my%20HVAC%20shop">Request a 15-minute walkthrough</a>
-    <div class="note">Or call Kevin at <a href="tel:+18286913551" id="call-bottom">(828) 691-3551</a> &middot; kevin@greenspanbusinessgrowthsystems.com</div>
+    <div class="req" id="request">
+      <form id="req-form" novalidate>
+        <h3>Request a 15-minute walkthrough</h3>
+        <p class="lead">Tell me who you are and I'll take it from there.</p>
+        <label for="f-name">Your name</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" required>
+        <div class="two">
+          <div>
+            <label for="f-shop">Shop name</label>
+            <input id="f-shop" name="shop" type="text" autocomplete="organization" required>
+          </div>
+          <div>
+            <label for="f-town">Town and state</label>
+            <input id="f-town" name="town" type="text" autocomplete="address-level2" required>
+          </div>
+        </div>
+        <div class="two">
+          <div>
+            <label for="f-phone">Phone</label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel">
+          </div>
+          <div>
+            <label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email">
+          </div>
+        </div>
+        <p class="hint">Phone or email, whichever you'd rather I use.</p>
+        <label for="f-note">What are you most tired of chasing? <span>(optional)</span></label>
+        <textarea id="f-note" name="note"></textarea>
+        <div class="hp" aria-hidden="true"><label for="f-hp">Leave this empty</label><input id="f-hp" name="botcheck" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn" id="req-send" type="submit">Send my request</button>
+        <p class="err" id="req-err" role="alert"></p>
+        <p class="fine">It comes to me, Kevin. I use it only to set up the call. No mailing list.</p>
+      </form>
+      <div class="done" id="req-done" role="status">
+        <div class="tick" aria-hidden="true">&#10003;</div>
+        <h3>Got it. Thank you.</h3>
+        <p>I'll look at your shop first, then get back to you myself to set a time.</p>
+        <p>Kevin Greenspan &middot; <a href="tel:+18286913551" id="call-done">(828) 691-3551</a></p>
+      </div>
+    </div>
+    <div class="note">Or call Kevin at <a href="tel:+18286913551" id="call-bottom">(828) 691-3551</a> &middot; <a href="mailto:kevin@greenspanbusinessgrowthsystems.com?subject=15-minute%20walkthrough%20for%20my%20HVAC%20shop" id="mail-bottom">kevin@greenspanbusinessgrowthsystems.com</a></div>
   </div>
 </section>
 
@@ -274,6 +342,67 @@
     var c = e.target.closest('a[href^="tel:"]');
     if (c) { gtag('event', 'call_click', { button_position: c.id }); }
   });
+  // Walkthrough request form: sends to Kevin's inbox, counts one GA4 event per request.
+  (function () {
+    var ENDPOINT = 'https://api.web3forms.com/submit';
+    var KEY = '31cccd24-bca1-424e-88d7-62ebb6dc35ea'; // public form key, not a password
+    var form = document.getElementById('req-form');
+    var done = document.getElementById('req-done');
+    var err = document.getElementById('req-err');
+    var btn = document.getElementById('req-send');
+    var q = new URLSearchParams(location.search);
+    var src = [q.get('utm_source') || '(none)', q.get('utm_medium') || '(none)', q.get('utm_campaign') || ''].join(' / ').replace(/ \/ $/, '');
+    var sent = false;
+    function val(n) { return (form.elements[n].value || '').trim(); }
+    function showErr(html) { err.innerHTML = html; err.style.display = 'block'; }
+    function finish() {
+      sent = true;
+      form.style.display = 'none';
+      done.style.display = 'block';
+      done.scrollIntoView({ block: 'center' });
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (sent || btn.disabled) return;
+      err.style.display = 'none';
+      var d = { name: val('name'), shop: val('shop'), town: val('town'), phone: val('phone'), email: val('email'), note: val('note') };
+      if (!d.name || !d.shop || !d.town) { showErr('Please add your name, your shop and your town.'); return; }
+      if (!d.phone && !d.email) { showErr('Please add a phone number or an email so I can reach you.'); return; }
+      if (d.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)) { showErr('That email address looks incomplete.'); return; }
+      if (val('botcheck')) { finish(); return; }
+      btn.disabled = true; btn.textContent = 'Sending\u2026';
+      var body = {
+        'Name': d.name, 'Shop': d.shop, 'Town and state': d.town,
+        'Phone': d.phone || '(not given)', 'Email': d.email || '(not given)',
+        'Most tired of chasing': d.note || '(left blank)',
+        'Came from': src, 'Page': location.pathname,
+        access_key: KEY,
+        subject: 'HVAC walkthrough request: ' + d.shop + ' (' + d.town + ')',
+        from_name: 'GBGS HVAC page'
+      };
+      if (d.email) { body.replyto = d.email; }
+      function failed() {
+        btn.disabled = false; btn.textContent = 'Send my request';
+        var mail = 'mailto:kevin@greenspanbusinessgrowthsystems.com?subject=' + encodeURIComponent('15-minute walkthrough for ' + d.shop) +
+          '&body=' + encodeURIComponent('Name: ' + d.name + '\nShop: ' + d.shop + '\nTown: ' + d.town + '\nPhone: ' + d.phone + '\nEmail: ' + d.email + '\n\n' + d.note);
+        showErr('That didn\u2019t go through on my end. Please <a href="' + mail + '">send it by email</a> or call me at <a href="tel:+18286913551">(828) 691-3551</a>.');
+        gtag('event', 'walkthrough_request_error', { lead_source: src });
+      }
+      // Give the mail service 15 seconds, then offer email and phone instead of leaving the visitor waiting.
+      var ctl = ('AbortController' in window) ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
+      fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          clearTimeout(timer);
+          if (j && (j.success === true || j.success === 'true')) {
+            gtag('event', 'walkthrough_request', { lead_source: src });
+            finish();
+          } else { failed(); }
+        })
+        .catch(function () { clearTimeout(timer); failed(); });
+    });
+  })();
   (function () {
     var v = document.getElementById('vid');
     function play() {
