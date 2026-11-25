@@ -99,6 +99,8 @@
   .hero .btn { margin-top: 18px; }
   .note a { color: var(--gold-light); text-decoration: none; font-weight: bold; white-space: nowrap; }
   .hero .video { margin-top: 26px; cursor: pointer; }
+  .problems .video { margin-top: 36px; cursor: pointer; }
+  .vidnote.center { text-align: center; }
   .video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .video .play { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%; background: rgba(10,10,15,0.72); border: 2px solid var(--gold); }
   .video .play::after { content: ""; position: absolute; left: 30px; top: 22px; border-left: 22px solid var(--gold-light); border-top: 15px solid transparent; border-bottom: 15px solid transparent; }
@@ -200,12 +202,12 @@
     </div>
     <a class="btn" id="cta-top" href="#request">Request a 15-minute walkthrough</a>
     <div class="note">Or call Kevin at <a href="tel:+18286913551" id="call-top">(828) 691-3551</a></div>
-    <div class="video" id="vid" role="button" tabindex="0" aria-label="Play the one-minute video">
-      <img src="poster.jpg" width="1280" height="720" alt="Kevin Greenspan in the one-minute video">
+    <div class="video" id="vid" data-yt="0rm1ipVwhqU" data-title="Josh Crowder testimonial" data-frame-title="Josh Crowder of WNC Climate Control on running his shop in one system" role="button" tabindex="0" aria-label="Play the 40-second video from Josh Crowder">
+      <img src="poster-josh.jpg" width="1280" height="720" alt="Josh Crowder, owner of WNC Climate Control, at his laptop">
       <span class="play" aria-hidden="true"></span>
-      <span class="len">Watch &middot; 1:12</span>
+      <span class="len">Watch &middot; 0:40</span>
     </div>
-    <div class="vidnote">One minute, from me to you. The screens show a demonstration company with fictional data.</div>
+    <div class="vidnote">Forty seconds from Josh Crowder, who owns WNC Climate Control. His shop is a founding partner of this system. The screens show a demonstration company with fictional data.</div>
   </div>
 </section>
 
@@ -246,6 +248,12 @@
         <p>On a project, you see the budget, the parts and the hours side by side.</p>
       </div>
     </div>
+    <div class="video" id="vid2" data-yt="dexsO4Y86vY" data-title="HVAC overview" data-frame-title="Three office problems HVAC shop owners tell me about" role="button" tabindex="0" aria-label="Play the one-minute video from Kevin">
+      <img src="poster.jpg" width="1280" height="720" alt="Kevin Greenspan in the one-minute video" loading="lazy">
+      <span class="play" aria-hidden="true"></span>
+      <span class="len">Watch &middot; 1:12</span>
+    </div>
+    <div class="vidnote center">The three problems in one minute, from me to you. The screens show a demonstration company with fictional data.</div>
   </div>
 </section>
 
@@ -403,19 +411,19 @@
         .catch(function () { clearTimeout(timer); failed(); });
     });
   })();
-  (function () {
-    var v = document.getElementById('vid');
+  // Click-to-play videos: Josh's 40 seconds on top, Kevin's one-minute overview lower down.
+  Array.prototype.forEach.call(document.querySelectorAll('.video[data-yt]'), function (v) {
     function play() {
       if (v.getAttribute('data-on')) return;
       v.setAttribute('data-on', '1');
       var mute = /[?&]mute=1/.test(location.search) ? '&mute=1' : '';
-      v.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/dexsO4Y86vY?rel=0&modestbranding=1&autoplay=1' + mute + '" title="Three office problems HVAC shop owners tell me about" allow="autoplay; accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+      v.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + v.getAttribute('data-yt') + '?rel=0&modestbranding=1&autoplay=1' + mute + '" title="' + v.getAttribute('data-frame-title') + '" allow="autoplay; accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>';
       v.style.cursor = 'default';
-      gtag('event', 'video_play', { video_title: 'HVAC overview' });
+      gtag('event', 'video_play', { video_title: v.getAttribute('data-title') });
     }
     v.addEventListener('click', play);
     v.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
-  })();
+  });
 </script>
 </body>
 </html>
